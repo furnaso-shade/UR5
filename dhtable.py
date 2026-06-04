@@ -1,6 +1,9 @@
 
 import numpy as np
 
+#suppresing scientific notations in the matrices
+np.set_printoptions(suppress=True)
+
 #using ur5 data
 a3, a4 = 425, 392
 d1, d4, d5, d6 = 0.0891, 0.109, 0.0946, 0.0823
