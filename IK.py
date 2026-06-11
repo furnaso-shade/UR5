@@ -1,6 +1,6 @@
 #IK
 import numpy as np
-
+from scipy import least_squares
 #suppressing the scientific notations in the matrix
 np.set_printoptions(suppress=True)
 
@@ -47,8 +47,8 @@ def matrices(q):
         Tfinal = Tfinal @ T
     return Tfinal
     
-
-def IK(T_desired, ):
+#using LM method for inverse kinematics
+def IK(T_desired, q_guess=np.zeros(6):
     def getErr(q):
         T_current = matrices(q)
         posErr = T_desired[0:3, 3] - T_current[0:3, 3]
@@ -61,4 +61,16 @@ def IK(T_desired, ):
             rotErr[1, 0] - rotErr[0, 1],
             ]) *0.5
         return np.concatenate((posErr, rErr))
-        
+    result = least_squares(getErr, T_desired, method=lm)
+    return result.x
+
+q_required = np.radians([0, 90, 90, 0, 0, 0])
+print ("the inputs used to test are", q_test)
+
+T_target = matrices(q_test)
+q_solved = IK(T_target, q_guess=np.zeros(6))
+print ("the inputs solved are", q_solved)
+
+T_solved = matrices(q_solved)
+validity = np.allclose(T_target,T_solved, atol=1e-4)
+print ("verification: ", validity)
